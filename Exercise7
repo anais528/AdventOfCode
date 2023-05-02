@@ -1,0 +1,23 @@
+import os
+
+def get_directory_size(path):
+    total_size = 0
+    for dirpath, dirnames, filenames in os.walk(path):
+        for f in filenames:
+            fp = os.path.join(dirpath, f)
+            total_size += os.path.getsize(fp)
+    return total_size
+
+def get_small_directories(path, max_size):
+    small_dirs = []
+    for dirpath, dirnames, filenames in os.walk(path):
+        total_size = get_directory_size(dirpath)
+        if total_size <= max_size:
+            small_dirs.append((dirpath, total_size))
+    return small_dirs
+
+# Example usage
+small_dirs = get_small_directories('/', 100000)
+total_size = sum([s[1] for s in small_dirs])
+print(total_size)
+
